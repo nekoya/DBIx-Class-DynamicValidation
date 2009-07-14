@@ -17,6 +17,8 @@ DBIx::Class::DynamicValidation
 
 Write 'validation' method in your schema object class.
 
+    __PACKAGE__->load_components( 'DynamicValidation' );
+
     sub validation {
         my $self = shift;
         [
