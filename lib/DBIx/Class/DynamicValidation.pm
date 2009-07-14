@@ -42,9 +42,9 @@ If you want to use any plugins for FV::Simple, set 'validator_plugins'.
         ];
     }
 
-    __PACKAGE__->validator_plugins( qw(
-        FormValidator::Simple::Plugin::DBIC::Unique
-    ) );
+    __PACKAGE__->validator_plugins( [
+        'FormValidator::Simple::Plugin::DBIC::Unique',
+    ] );
 
 =head1 DESCRIPTION
 
@@ -66,8 +66,8 @@ sub _validate {
     my %data = $self->get_columns;
     my $module = $self->validator;
     $module->require;
-    if ( @{ $self->validator_plugins } ) {
-        $module->load_plugin($_) for $self->validator_plugins;
+    if ( $self->validator_plugins ) {
+        $module->load_plugin($_) for @{ $self->validator_plugins };
     }
     my $result = $module->check(\%data => $self->validation);
     if ( $result->success ) {
