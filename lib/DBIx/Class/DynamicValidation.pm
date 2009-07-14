@@ -79,23 +79,23 @@ sub _validate {
 
 =head2 insert
 
-call validate() before insert.
+call _validate method before insert.
 
 =cut
 sub insert {
     my $self = shift;
-    $self->validate;
+    $self->_validate;
     $self->next::method(@_);
 }
 
 =head2 update
 
-call validate() before update.
+call _validate method before update.
 
 =cut
 sub update {
     my $self = shift;
-    $self->validate;
+    $self->_validate;
     $self->next::method(@_);
 }
 
