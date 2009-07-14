@@ -54,24 +54,27 @@ You can use FormValidator::Simple and their plugins as a validator.
 
 =head1 METHODS
 
-=head2 validate()
+=head2 _validate()
 
-abstract.
 when validation failed, throw exception.
 
 =cut
-sub validate {
+sub _validate {
     my $self = shift;
     return unless defined $self->validation;
 
     my %data = $self->get_columns;
     my $module = $self->validator;
     $module->require;
-    if ( $self->validator_plugins ) {
+    if ( @{ $self->validator_plugins } ) {
         $module->load_plugin($_) for $self->validator_plugins;
     }
     my $result = $module->check(\%data => $self->validation);
-    croak $result unless $result->success;
+    if ( $result->success ) {
+        return $result;
+    } else {
+        croak $result;
+    }
 }
 
 =head2 insert
